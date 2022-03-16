@@ -23,12 +23,7 @@ CORS(app)
 
 # define the function to pre-process the 
 def transform_image(image_bytes):
-    my_transforms = transforms.Compose([transforms.Resize(255),
-                                        transforms.CenterCrop(224),
-                                        transforms.ToTensor(),
-                                        transforms.Normalize(
-                                            [0.485, 0.456, 0.406],
-                                            [0.229, 0.224, 0.225])])
+    my_transforms = transforms.Compose([transforms.Resize(255),transforms.CenterCrop(224),transforms.ToTensor(),transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
     return my_transforms(image).unsqueeze(0)
 
@@ -38,13 +33,13 @@ def transform_image(image_bytes):
 imagenet_class_mapping = json.load(open('imagenet_class_index.json'))
 
 
-'''
-@app.route("/members")
-def members():
-    return{"members": ["Member1", "Menber2", "Member3"]}
-'''
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route("/")
+def home():
+    return{"Hello": "It's Working"}
+
+
+@app.route('/upload', methods=['POST'])
 def upload():
     f = request.files['myFile']
     basepath = os.path.dirname(__file__)
@@ -53,13 +48,13 @@ def upload():
     print(file_path)
     result = predict(file_path)
     return result
-    #return 'file uploaded successfully!'
+    
 
 # define the function to get the class predicted of image
 # it takes the parameter: image path and provide the output as the predicted class
-#@cross_origin(supports_credentials=True)
 
-@app.route('/uploadd', methods=['GET', 'POST'])
+
+@app.route('/uploadd', methods=['POST'])
 def uploadd():
     file = request.files['myFile']
     basepath = os.path.dirname(__file__)
@@ -69,9 +64,8 @@ def uploadd():
     print(file_path)
     result = predict(file_path)
     return result
-    #return 'file uploaded successfully!'
 
-@app.route('/predict', methods=['GET', 'POST'])
+
 def predict(image_path):
   # read the image in binary form
     with open(image_path, 'rb') as file:
@@ -87,7 +81,5 @@ def predict(image_path):
     return finalClass
 
 
-
-#print(predict(image_path='C:/Users/an672/Downloads/husky.jpg'))
 if __name__ == '__main__':
     app.run(debug=True)

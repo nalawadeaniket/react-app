@@ -1,41 +1,8 @@
-import axios from 'axios';
- 
 import React,{useState, useEffect, Component} from 'react';
+import axios from 'axios';
 import './styles.css';
 import { CameraFeed } from './components/camera-feed';
-/* 
-function App(){
 
-  const [data, setData] = useState([{}])
-  useEffect(()=> {
-    fetch("/members").then(
-      data => {
-        console.log(data.members)
-        //setData(data)
-        //console.log(data)
-      }
-    )
-    
-    
-  },[])
-  return(
-    <div>
-      
-      {(typeof data.members === 'undefined') ? (
-        <p>Loading...</p>
-      ) : (
-        data.members.map((member,i) => (
-          <p key={i}>{member}</p>
-        ))
-      )}
-  
-    </div>
-  )
-  
-  
-
-}
-*/
 class App extends Component {
   
     state = {
@@ -49,7 +16,6 @@ class App extends Component {
     
     // On file select (from the pop up)
     onFileChange = event => {
-    
       // Update the state
       this.setState({ selectedFile: event.target.files[0] });
     
@@ -62,7 +28,7 @@ class App extends Component {
       // Connect to a seaweedfs instance
       axios({
         method: 'post',
-        url: 'http://localhost:5000/uploadd',
+        url: 'https://flask-app-aniket.herokuapp.com/uploadd',
         data: formData,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       }).then(
@@ -91,7 +57,7 @@ class App extends Component {
 
       axios({
         method: 'post',
-        url: 'http://localhost:5000/upload',
+        url: 'https://flask-app-aniket.herokuapp.com/upload',
         data: formData,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       }).then(
